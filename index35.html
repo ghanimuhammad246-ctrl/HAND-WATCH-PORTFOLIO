@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRYSMA® Watches</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0b0b0b;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .navbar {
+            background-color: #ffffff !important;
+            padding: 15px 0;
+            border-bottom: 1px solid #eaeaea;
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1030;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        body {
+            padding-top: 75px;
+        }
+        .navbar-brand {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #000000 !important;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-link {
+            color: #222222 !important;
+            font-weight: 400;
+            font-size: 0.95rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .dropdown-item:hover {
+            color: #c5a059 !important;
+        }
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+        .dropdown-menu {
+            border-radius: 0;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+        .dropdown-item {
+            font-size: 0.9rem;
+            padding: 8px 20px;
+            color: #222;
+            cursor: pointer;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .nav-icons a {
+            color: #222222 !important;
+            font-size: 1.2rem;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .nav-icons a:hover {
+            color: #c5a059 !important;
+        }
+        .hero-section {
+            position: relative;
+            background-color: #0b0b0b;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 1;
+        }
+        .hero-bg.active {
+            opacity: 1;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            z-index: 2;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 3;
+        }
+        .hero-title {
+            font-size: clamp(3rem, 7vw, 7rem);
+            font-weight: 700;
+            line-height: 0.9;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+        }
+        .hero-subtitle {
+            font-size: clamp(2rem, 5vw, 5rem);
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+        .sale-badge {
+            letter-spacing: 4px;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            display: inline-block;
+            padding: 5px 0;
+            margin: 15px 0;
+        }
+        .hero-desc {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #cccccc;
+        }
+        .category-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            height: 480px;
+            cursor: pointer;
+        }
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
+        .category-overlay {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .product-card {
+            background: #ffffff;
+            color: #000000;
+            border-radius: 4px;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .sale-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #000;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            font-weight: 600;
+        }
+        .product-img {
+            height: 250px;
+            object-fit: contain;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .product-price {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+        .mini-watch-thumbs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .mini-watch-thumbs img {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .rating-stars {
+            color: #f39c12;
+            font-size: 0.75rem;
+        }
+        .rating-stars span {
+            color: #666;
+            margin-left: 4px;
+        }
+        .btn-view-all {
+            background: #000;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 12px 50px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .btn-view-all:hover {
+            background: #c5a059;
+            color: #fff;
+            border-color: #c5a059;
+        }
+        .filter-tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-tab.active-tab {
+            color: #fff !important;
+            font-weight: bold;
+            border-bottom: 2px solid #c5a059 !important;
+            padding-bottom: 4px;
+        }
+        .spotlight-section {
+            padding: 80px 0;
+            background-color: #0b0b0b;
+        }
+        .spotlight-img {
+            max-height: 450px;
+            object-fit: contain;
+            width: 100%;
+        }
+        .btn-buy-now {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+            padding: 8px 25px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 0;
+            transition: all 0.3s;
+        }
+        .btn-buy-now:hover {
+            background: #fff;
+            color: #000;
+        }
+        .testimonial-box {
+            background: #141414;
+            border: 1px solid #222;
+            padding: 50px 30px;
+            border-radius: 6px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .insta-grid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.4s ease, filter 0.3s;
+        }
+        .insta-grid .grid-item {
+            overflow: hidden;
+        }
+        .insta-grid img:hover {
+            filter: brightness(1.15);
+            transform: scale(1.05);
+        }
+        .contact-page-section {
+            background-color: #ffffff;
+            color: #222222;
+            padding: 60px 0;
+            scroll-margin-top: 100px;
+        }
+        .contact-page-section h2 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            color: #000;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .contact-form-box {
+            max-width: 700px;
+            margin: 0 auto 50px auto;
+        }
+        .contact-form-box .form-control {
+            border-radius: 0;
+            border: 1px solid #ced4da;
+            padding: 12px 15px;
+            font-size: 0.9rem;
+            color: #222;
+        }
+        .contact-form-box .form-control:focus {
+            box-shadow: none;
+            border-color: #000;
+        }
+        .btn-send-message {
+            background: #000000;
+            color: #ffffff;
+            border-radius: 0;
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .btn-send-message:hover {
+            background: #c5a059;
+            color: #fff;
+        }
+        .locations-box {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .locations-box p, .locations-box a {
+            font-size: 0.85rem;
+            color: #555;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+        .locations-box a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+        .perks-row {
+            border-top: 1px solid #eaeaea;
+            border-bottom: 1px solid #eaeaea;
+            padding: 30px 0;
+            margin-bottom: 0;
+        }
+        .perk-item {
+            text-align: center;
+        }
+        .perk-item i {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .perk-item h6 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #000;
+        }
+        .perk-item p {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0;
+        }
+        footer {
+            background-color: #ffffff;
+            color: #222222;
+            font-size: 0.85rem;
+            padding: 60px 0 30px;
+            border-top: 1px solid #eaeaea;
+        }
+        footer h6 {
+            color: #000000;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        footer ul {
+            padding-left: 0;
+            list-style: none;
+        }
+        footer ul li {
+            margin-bottom: 10px;
+        }
+        footer ul li a {
+            color: #555555;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        footer ul li a:hover {
+            color: #000000;
+        }
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #f1f1f1;
+            color: #000;
+            border-radius: 50%;
+            margin-right: 8px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .social-icons a:hover {
+            background: #c5a059;
+            color: #fff;
+        }
+
+        /* Join Family Box */
+        .join-family {
+            background: #000000;
+            padding: 60px 0;
+            text-align: center;
+        }
+        .newsletter-input {
+            background: #141414;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 0;
+            padding: 12px 15px;
+        }
+        .newsletter-input:focus {
+            background: #141414;
+            border-color: #c5a059;
+            color: #fff;
+            box-shadow: none;
+        }
+        .btn-subscribe {
+            background: #ffffff;
+            color: #000;
+            border-radius: 0;
+            font-weight: 500;
+            padding: 12px 25px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        .btn-subscribe:hover {
+            background: #c5a059;
+            color: #fff;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: #fff;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+            transition: transform 0.3s;
+            text-decoration: none;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: #fff;
+        }
+        .profile-dropdown-box {
+            position: absolute;
+            top: 65px;
+            right: 0;
+            background: #ffffff;
+            color: #222222;
+            width: 380px;
+            padding: 25px;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid #eaeaea;
+            z-index: 1050;
+            display: none;
+        }
+        .profile-dropdown-box h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+        }
+        .btn-close-dropdown {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f1f1f1;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #000;
+            font-size: 0.9rem;
+        }
+        .btn-close-dropdown:hover {
+            background: #e2e2e2;
+        }
+        .btn-shop-sign {
+            background: #5b36f5;
+            color: #ffffff;
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            border: none;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            transition: background 0.3s;
+        }
+        .btn-shop-sign:hover {
+            background: #4928db;
+            color: #fff;
+        }
+        .divider-or {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        .divider-or::before, .divider-or::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+        .divider-or::before {
+            margin-right: .75em;
+        }
+        .divider-or::after {
+            margin-left: .75em;
+        }
+        .email-input-group {
+            position: relative;
+            margin-bottom: 12px;
+        }
+        .email-input-group input {
+            width: 100%;
+            padding: 10px 40px 10px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #222;
+        }
+        .email-input-group input:focus {
+            outline: none;
+            border-color: #000;
+        }
+        .email-input-group button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #555;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .form-check-label {
+            font-size: 0.85rem;
+            color: #444;
+        }
+        .modal-action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-action-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #222;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .modal-action-btn:hover {
+            background: #f8f9fa;
+            color: #000;
+        }
+        .search-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 11, 11, 0.95);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+        .search-modal-header {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            width: 100%;
+            position: relative;
+        }
+        .search-modal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #c5a059;
+            color: #fff;
+            font-size: 2rem;
+            padding: 10px 50px 10px 10px;
+            font-family: 'Cinzel', serif;
+        }
+        .search-modal-input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        .search-modal-close {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .search-results-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">CRYSMA®</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="menDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Men</a>
+                        <ul class="dropdown-menu" aria-labelledby="menDropdown">
+                            <li><a class="dropdown-item" onclick="openLuxuryPage(event)">Luxury watch</a></li>
+                            <li><a class="dropdown-item" onclick="openStrapPage(event)">Strap Watches</a></li>
+                            <li><a class="dropdown-item" onclick="openChainPage(event)">Chain Watches</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="womenDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Women</a>
+                        <ul class="dropdown-menu" aria-labelledby="womenDropdown">
+                            <li><a class="dropdown-item" onclick="openSmartWatchPage(event)">Smart watch</a></li>
+                            <li><a class="dropdown-item" onclick="openChainPage(event)">Chain Watches</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="coupleDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Couple</a>
+                        <ul class="dropdown-menu" aria-labelledby="coupleDropdown">
+                            <li><a class="dropdown-item" onclick="openCoupleChainPage(event)">Couple Chain Watches</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact-section">Contact Us</a>
+                    </li>
+                </ul>
+            </div>           
+            <div class="nav-icons">
+                <a onclick="toggleProfileDropdown(event)" title="User Profile"><i class="fa-regular fa-user"></i></a>
+                <a onclick="openSearchModal(event)" title="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" title="Shopping Cart"><i class="fa-solid fa-bag-shopping"></i></a>
+                <div class="profile-dropdown-box" id="profileDropdown">
+                    <button class="btn-close-dropdown" onclick="closeProfileDropdown()"><i class="fa-solid fa-xmark"></i></button>
+                    <h4>Sign in or create account</h4>
+                    <button class="btn-shop-sign" onclick="alert('Redirecting to Shop Sign In...')">Sign in with shop</button>
+                    <div class="divider-or">OR</div>      
+                    <div class="email-input-group">
+                        <input type="email" placeholder="Email">
+                        <button type="button"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="" id="newsCheck">
+                        <label class="form-check-label" for="newsCheck">
+                            Email me with news and offers
+                        </label>
+                    </div>                    
+                    <div class="modal-action-buttons">
+                        <a href="#" class="modal-action-btn">
+                            <i class="fa-solid fa-box"></i> Orders
+                        </a>
+                        <a href="#" class="modal-action-btn">
+                            <i class="fa-regular fa-user"></i> Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="search-modal-overlay" id="searchModal">
+        <div class="search-modal-header">
+            <input type="text" id="fullscreenSearchInput" class="search-modal-input" placeholder="Type luxury, smart, couple..." autocomplete="off">
+            <button class="search-modal-close" onclick="closeSearchModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="search-results-container">
+            <div class="row g-4" id="searchModalResults">
+            </div>
+        </div>
+    </div>
+    <div id="luxuryPage" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b0b0b; z-index: 2500; display: none; overflow-y: auto; padding: 40px 20px;">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-dark pb-3">
+                <h2 class="font-cinzel text-warning fw-bold mb-0">CRYSMA® - Luxury Collection</h2>
+                <button class="btn btn-outline-light btn-sm rounded-0 px-4" onclick="closeLuxuryPage()">BACK TO HOME</button>
+            </div>
+            <div class="row g-4" id="luxuryPageGrid"></div>
+        </div>
+    </div>
+    <div id="smartWatchPage" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b0b0b; z-index: 2500; display: none; overflow-y: auto; padding: 40px 20px;">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-dark pb-3">
+                <h2 class="font-cinzel text-warning fw-bold mb-0">CRYSMA® - Smart Watch Collection</h2>
+                <button class="btn btn-outline-light btn-sm rounded-0 px-4" onclick="closeSmartWatchPage()">BACK TO HOME</button>
+            </div>
+            <div class="row g-4" id="smartWatchPageGrid"></div>
+        </div>
+    </div>
+    <div id="strapPage" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b0b0b; z-index: 2500; display: none; overflow-y: auto; padding: 40px 20px;">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-dark pb-3">
+                <h2 class="font-cinzel text-warning fw-bold mb-0">CRYSMA® - Strap Collection</h2>
+                <button class="btn btn-outline-light btn-sm rounded-0 px-4" onclick="closeStrapPage()">BACK TO HOME</button>
+            </div>
+            <div class="row g-4" id="strapPageGrid"></div>
+        </div>
+    </div>
+    <div id="chainPage" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b0b0b; z-index: 2500; display: none; overflow-y: auto; padding: 40px 20px;">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-dark pb-3">
+                <h2 class="font-cinzel text-warning fw-bold mb-0">CRYSMA® - Chain Collection</h2>
+                <button class="btn btn-outline-light btn-sm rounded-0 px-4" onclick="closeChainPage()">BACK TO HOME</button>
+            </div>
+            <div class="row g-4" id="chainPageGrid"></div>
+        </div>
+    </div>
+    <div id="coupleChainPage" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0b0b0b; z-index: 2500; display: none; overflow-y: auto; padding: 40px 20px;">
+        <div class="container py-4">
+            <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-dark pb-3">
+                <h2 class="font-cinzel text-warning fw-bold mb-0">CRYSMA® - Matching Couple Chain Watches</h2>
+                <button class="btn btn-outline-light btn-sm rounded-0 px-4" onclick="closeCoupleChainPage()">BACK TO HOME</button>
+            </div>
+            <div class="row g-4" id="coupleChainPageGrid"></div>
+        </div>
+    </div>
+    <header class="hero-section">
+        <div class="hero-overlay"></div>
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=1920" class="hero-bg active" alt="Luxury Watch Banner 1">
+        <img src="https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=1920" class="hero-bg" alt="Luxury Watch Banner 2">
+        <img src="https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=1920" class="hero-bg" alt="Luxury Watch Banner 3">
+        <div class="container hero-content">
+            <div class="row">
+                <div class="col-lg-7">
+                    <span class="text-uppercase tracking-widest text-light small fw-semibold">UPTO</span>
+                    <h1 class="hero-title">30%</h1>
+                    <h2 class="hero-subtitle">OFF</h2>
+                    <div><span class="sale-badge">SALE</span></div>
+                    <p class="hero-desc">TIMELESS STYLE. EXCLUSIVE SAVINGS.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="py-5 bg-black">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="category-card" onclick="filterProducts('men')">
+                        <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=600" alt="Men">
+                        <div class="category-overlay">MEN</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="category-card" onclick="filterProducts('women')">
+                        <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600" alt="Women">
+                        <div class="category-overlay">WOMEN</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="category-card" onclick="filterProducts('couple')">
+                        <img src="https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=600" alt="Couple">
+                        <div class="category-overlay">COUPLE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-black">
+        <div class="container">
+            <div class="text-center mb-4">
+                <ul class="nav justify-content-center gap-4">
+                    <li class="nav-item"><a id="tab-men" class="nav-link text-muted filter-tab active-tab" onclick="filterProducts('men')">Men</a></li>
+                    <li class="nav-item"><a id="tab-women" class="nav-link text-muted filter-tab" onclick="filterProducts('women')">Women</a></li>
+                    <li class="nav-item"><a id="tab-couple" class="nav-link text-muted filter-tab" onclick="filterProducts('couple')">Couple</a></li>
+                </ul>
+            </div>   
+            <div class="row g-4" id="product-grid">
+            </div>
+            <div class="text-center mt-5">
+                <button class="btn btn-view-all" onclick="viewAllProducts()">VIEW ALL</button>
+            </div>
+        </div>
+    </section>
+    <section class="spotlight-section">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=600" alt="Crysma CRL9032 Dravon" class="spotlight-img">
+                </div>
+                <div class="col-md-6">
+                    <span class="badge bg-warning text-dark mb-2 px-3 py-1 fw-bold text-uppercase" style="letter-spacing: 1px;">Featured Timepiece</span>
+                    <h2 class="font-cinzel fw-bold mb-3 text-warning display-6">Crysma CRL9032 Dravon</h2>
+                    <p class="text-light lead fs-6 mb-4">A masterpiece of design and engineering. This sophisticated timepiece features a striking black dial, day-date display, and premium stainless steel construction. Perfect for the modern gentleman who appreciates timeless style.</p>
+                    <button class="btn btn-buy-now">BUY NOW</button>
+                </div>
+            </div>
+            <div class="row align-items-center flex-row-reverse mb-5">
+                <div class="col-md-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=600" alt="Features Watch" class="spotlight-img">
+                </div>
+                <div class="col-md-6">
+                    <span class="badge bg-warning text-dark mb-2 px-3 py-1 fw-bold text-uppercase" style="letter-spacing: 1px;">Craftsmanship</span>
+                    <h3 class="font-cinzel fw-bold mb-3 text-warning display-6">Premium Features</h3>
+                    <p class="text-light lead fs-6 mb-4">Engineered to perfection, our collection brings together durability, high-end materials, and unmatched comfort for daily wear.</p>
+                    <ul class="text-light small list-unstyled lh-lg mb-4">
+                        <li>• Japanese Quartz Movement</li>
+                        <li>• Sapphire Crystal Glass</li>
+                        <li>• Water Resistant</li>
+                        <li>• Day & Date Display</li>
+                        <li>• Stainless Steel Bracelet</li>
+                        <li>• Fold-Over Clasp</li>
+                    </ul>
+                    <p class="small text-light">Quality you can see and feel.</p>
+                    <button class="btn btn-buy-now">BUY NOW</button>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center">
+                    <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600" alt="Office to Evening" class="spotlight-img">
+                </div>
+                <div class="col-md-6">
+                    <span class="badge bg-warning text-dark mb-2 px-3 py-1 fw-bold text-uppercase" style="letter-spacing: 1px;">Versatility</span>
+                    <h3 class="font-cinzel fw-bold mb-3 text-warning display-6">From Office to Evening</h3>
+                    <p class="text-light lead fs-6 mb-4">Effortlessly transition from boardroom to dinner. The classic dial and polished steel bracelet complement any outfit, while the reliable quartz movement ensures you're always on time. A watch that works as hard as you do.</p>
+                    <button class="btn btn-buy-now">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-black border-top border-bottom border-dark">
+        <div class="container text-center">
+            <h3 class="font-cinzel fw-bold mb-2">What Our Customers Say</h3>
+            <div class="text-warning mb-4 small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i> 4.60 ★ (171)</div>
+            <div class="testimonial-box position-relative">
+                <i class="fa-solid fa-quote-left fs-3 text-muted mb-3"></i>
+                <h5 class="fw-bold mb-3">Amazing</h5>
+                <div class="text-warning small mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="mb-1 fw-semibold">Nida Nasrullah <span class="badge bg-light text-dark fw-normal ms-1">Verified</span></p>
+                <a class="text-muted small text-decoration-underline">Crysma CRL80422 Horvel (Ladies)</a>  
+                <button class="carousel-control-prev position-absolute top-50 start-0 translate-middle-y bg-transparent border-0 text-white fs-4 ms-2"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-control-next position-absolute top-50 end-0 translate-middle-y bg-transparent border-0 text-white fs-4 me-2"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+    <section class="py-5 bg-black">
+        <div class="container text-center mb-4">
+            <span class="badge bg-warning text-dark mb-2 px-3 py-1 fw-bold text-uppercase" style="letter-spacing: 1px;">Gallery</span>
+            <h2 class="font-cinzel fw-bold text-warning display-6">Luxury Watch Collection</h2>
+        </div>
+        <div class="container-fluid px-0">
+            <div class="row g-0 insta-grid">
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1539874754764-5a96559165b0?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+                <div class="col-6 col-md-2 grid-item">
+                    <img src="https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=600" alt="Watch">
+                </div>
+            </div>
+            <div class="text-center py-3 bg-black text-muted small">@crysmawatches</div>
+        </div>
+    </section>
+    <section id="contact-section" class="contact-page-section">
+        <div class="container">
+            <h2>Contact Us</h2>  
+            <div class="contact-form-box">
+                <form onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" class="form-control" placeholder="E-mail" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="4" placeholder="Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-send-message">SEND MESSAGE</button>
+                </form>
+            </div>
+            <div class="locations-box">
+                <p class="mb-2 fw-bold text-dark">Locations:</p>
+                <a href="#">Khalid Watch Co., Fawara Chowk, Main Shahalam Market Road, Lahore</a>
+                <a href="#">GMT Swiss Watches, 71-Naqi Arcade, The Mall, Lahore</a>
+                <a href="#">Khalid Watch Co., Shop # 7, Eden Centre, Near Jazz Office, Jail Road, Lahore</a>
+            </div>
+            <div class="row perks-row">
+                <div class="col-md-3 col-6 perk-item mb-3 mb-md-0">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h6>7-Day Exchange</h6>
+                    <p>Defective products can be exchanged within 7 days.</p>
+                </div>
+                <div class="col-md-3 col-6 perk-item mb-3 mb-md-0">
+                    <i class="fa-solid fa-headset"></i>
+                    <h6>24/7 Support</h6>
+                    <p>Our support team is always here for you, 7 days a week.</p>
+                </div>
+                <div class="col-md-3 col-6 perk-item">
+                    <i class="fa-solid fa-box-open"></i>
+                    <h6>Free Shipping</h6>
+                    <p>Enjoy free shipping across Pakistan on all your orders.</p>
+                </div>
+                <div class="col-md-3 col-6 perk-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h6>Security Payments</h6>
+                    <p>Shop with confidence using our secure payment options.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="join-family">
+        <div class="container">
+            <h3 class="text-white font-cinzel fw-bold mb-2">Join the Crysma Family</h3>
+            <p class="text-muted small mb-4">Get updates on new arrivals, exclusive launches, and special offers</p>
+            <form onsubmit="event.preventDefault();" class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <input type="email" class="form-control newsletter-input" placeholder="E-mail" required>
+                        <button class="btn btn-subscribe" type="submit">SUBSCRIBE</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <h6>About</h6>
+                    <p class="small text-muted mb-2"><strong>CRYSMA Watches - 25 Years of Excellence</strong></p>
+                    <p class="small text-muted mb-4">Precision-crafted timepieces combining Swiss-inspired design with exceptional value. Every watch is a testament to quality and timeless style.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6>Products</h6>
+                    <ul>
+                        <li><a onclick="filterProducts('men')">Men</a></li>
+                        <li><a onclick="filterProducts('women')">Women</a></li>
+                        <li><a onclick="filterProducts('couple')">Couple</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6>Quick Links</h6>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#contact-section">Contact Us</a></li>
+                        <li><a href="#">Exchange and return</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms And Condition</a></li>
+                        <li><a href="#">Blogs</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6>Contact Us</h6>
+                    <p class="small text-muted mb-2"><strong>Khalid Watch Co.,</strong> Fawara Chowk, Main Shahalam Market Road, Lahore</p>
+                    <p class="small text-muted mb-2"><strong>GMT Swiss Watches,</strong> 71-Naqi Arcade, The Mall, Lahore</p>
+                    <p class="small text-muted mb-2"><strong>Khalid Watch Co.,</strong> Shop # 7, Eden Centre, Near Jazz Office, Jail Road, Lahore</p>
+                    <p class="small text-muted mb-1">info@crysmawatches.com</p>
+                    <p class="small text-muted">+92 300 0279762</p>
+                </div>
+            </div>
+            <div class="row mt-4 pt-3 border-top">
+                <div class="col-md-12 text-center text-muted small">
+                    © 2026 - Crysma Watches
+                </div>
+            </div>
+        </div>
+    </footer>
+    <a href="https://wa.me/923000279762" target="_blank" class="whatsapp-float">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleProfileDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+        function closeProfileDropdown() {
+            document.getElementById('profileDropdown').style.display = 'none';
+        }
+        function openSearchModal(event) {
+            event.stopPropagation();
+            closeProfileDropdown();
+            const modal = document.getElementById('searchModal');
+            modal.style.display = 'flex';
+            document.getElementById('fullscreenSearchInput').focus();
+            renderSearchProducts([...productsData.men, ...productsData.women, ...productsData.couple, ...productsData.coupleChain, ...productsData.smartWatches, ...productsData.strapWatches, ...productsData.chainWatches]);
+        }
+        function closeSearchModal() {
+            document.getElementById('searchModal').style.display = 'none';
+            document.getElementById('fullscreenSearchInput').value = '';
+        }
+        function openLuxuryPage(event) {
+            if(event) event.preventDefault();
+            closeProfileDropdown();
+            const luxuryPage = document.getElementById('luxuryPage');
+            luxuryPage.style.display = 'block';
+            const grid = document.getElementById('luxuryPageGrid');
+            grid.innerHTML = '';
+            renderProducts(productsData.men, 'luxuryPageGrid');
+        }
+        function closeLuxuryPage() {
+            document.getElementById('luxuryPage').style.display = 'none';
+        }
+        function openSmartWatchPage(event) {
+            if(event) event.preventDefault();
+            closeProfileDropdown();
+            const smartWatchPage = document.getElementById('smartWatchPage');
+            smartWatchPage.style.display = 'block';
+            const grid = document.getElementById('smartWatchPageGrid');
+            grid.innerHTML = '';
+            renderProducts(productsData.smartWatches, 'smartWatchPageGrid');
+        }
+        function closeSmartWatchPage() {
+            document.getElementById('smartWatchPage').style.display = 'none';
+        }
+        function openStrapPage(event) {
+            if(event) event.preventDefault();
+            closeProfileDropdown();
+            const strapPage = document.getElementById('strapPage');
+            strapPage.style.display = 'block';
+            const grid = document.getElementById('strapPageGrid');
+            grid.innerHTML = '';
+            renderProducts(productsData.strapWatches, 'strapPageGrid');
+        }
+        function closeStrapPage() {
+            document.getElementById('strapPage').style.display = 'none';
+        }
+        function openChainPage(event) {
+            if(event) event.preventDefault();
+            closeProfileDropdown();
+            const chainPage = document.getElementById('chainPage');
+            chainPage.style.display = 'block';
+            const grid = document.getElementById('chainPageGrid');
+            grid.innerHTML = '';
+            renderProducts(productsData.chainWatches, 'chainPageGrid');
+        }
+        function closeChainPage() {
+            document.getElementById('chainPage').style.display = 'none';
+        }
+        function openCoupleChainPage(event) {
+            if(event) event.preventDefault();
+            closeProfileDropdown();
+            const coupleChainPage = document.getElementById('coupleChainPage');
+            coupleChainPage.style.display = 'block';
+            const grid = document.getElementById('coupleChainPageGrid');
+            grid.innerHTML = '';
+            renderProducts(productsData.coupleChain, 'coupleChainPageGrid');
+        }
+        function closeCoupleChainPage() {
+            document.getElementById('coupleChainPage').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (!event.target.closest('.nav-icons')) {
+                closeProfileDropdown();
+            }
+        }
+        const productsData = {
+            men: [
+                { 
+                    title: "Crysma Grand Luxury Chrono", 
+                    price: "Rs.24,500.00", 
+                    oldPrice: "Rs.28,000.00", 
+                    save: "Save Rs. 3,500.00", 
+                    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Royal Gold Edition", 
+                    price: "Rs.19,800.00", 
+                    oldPrice: "Rs.22,500.00", 
+                    save: "Save Rs. 2,700.00", 
+                    img: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.8",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Prestige Steel Master", 
+                    price: "Rs.16,800.00", 
+                    oldPrice: "Rs.19,500.00", 
+                    save: "Save Rs. 2,700.00", 
+                    img: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.7",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Executive Classic", 
+                    price: "Rs.14,200.00", 
+                    oldPrice: "Rs.16,900.00", 
+                    save: "Save Rs. 2,700.00", 
+                    img: "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.6",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            coupleChain: [
+                { 
+                    title: "Crysma Crown Royal Gold Couple Chain Set", 
+                    price: "Rs.29,900.00", 
+                    oldPrice: "Rs.35,000.00", 
+                    save: "Save Rs. 5,100.00", 
+                    img: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=500", 
+                    rating: "5.0",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Silver Diamond-Cut Couple Chain Set", 
+                    price: "Rs.27,500.00", 
+                    oldPrice: "Rs.32,000.00", 
+                    save: "Save Rs. 4,500.00", 
+                    img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Midnight Black Elite Couple Chain Set", 
+                    price: "Rs.31,000.00", 
+                    oldPrice: "Rs.36,500.00", 
+                    save: "Save Rs. 5,500.00", 
+                    img: "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=500", 
+                    rating: "5.0",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Rose Gold Twin Luxury Chain Set", 
+                    price: "Rs.28,200.00", 
+                    oldPrice: "Rs.33,000.00", 
+                    save: "Save Rs. 4,800.00", 
+                    img: "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1526045431048-f857369baa09?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            smartWatches: [
+                { 
+                    title: "Crysma Luna Elegance Smartwatch", 
+                    price: "Rs.9,500.00", 
+                    oldPrice: "Rs.12,000.00", 
+                    save: "Save Rs. 2,500.00", 
+                    img: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Apex Fit Smart Edition", 
+                    price: "Rs.11,200.00", 
+                    oldPrice: "Rs.14,000.00", 
+                    save: "Save Rs. 2,800.00", 
+                    img: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.8",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Pulse Sport Smartwatch", 
+                    price: "Rs.10,800.00", 
+                    oldPrice: "Rs.13,500.00", 
+                    save: "Save Rs. 2,700.00", 
+                    img: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.7",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            strapWatches: [
+                { 
+                    title: "Crysma Leather Classic Strap", 
+                    price: "Rs.12,500.00", 
+                    oldPrice: "Rs.15,000.00", 
+                    save: "Save Rs. 2,500.00", 
+                    img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.8",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Vintage Brown Strap", 
+                    price: "Rs.13,400.00", 
+                    oldPrice: "Rs.16,000.00", 
+                    save: "Save Rs. 2,600.00", 
+                    img: "https://images.unsplash.com/photo-1539874754764-5a96559165b0?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1539874754764-5a96559165b0?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Minimalist Black Strap", 
+                    price: "Rs.11,900.00", 
+                    oldPrice: "Rs.14,500.00", 
+                    save: "Save Rs. 2,600.00", 
+                    img: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.7",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1539874754764-5a96559165b0?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            chainWatches: [
+                { 
+                    title: "Crysma Steel Armor Chain Watch", 
+                    price: "Rs.18,500.00", 
+                    oldPrice: "Rs.21,500.00", 
+                    save: "Save Rs. 3,000.00", 
+                    img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Silver Link Chain Master", 
+                    price: "Rs.17,200.00", 
+                    oldPrice: "Rs.20,000.00", 
+                    save: "Save Rs. 2,800.00", 
+                    img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.8",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Heavy Metal Chain Edition", 
+                    price: "Rs.19,900.00", 
+                    oldPrice: "Rs.23,000.00", 
+                    save: "Save Rs. 3,100.00", 
+                    img: "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            women: [
+                { 
+                    title: "Crysma Luna Elegance Smartwatch", 
+                    price: "Rs.9,500.00", 
+                    oldPrice: "Rs.12,000.00", 
+                    save: "Save Rs. 2,500.00", 
+                    img: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1523359346063-d879354c0ea5?auto=format&fit=crop&q=80&w=100"
+                    ]
+                },
+                { 
+                    title: "Crysma Royal Gold Edition", 
+                    price: "Rs.10,200.00", 
+                    oldPrice: "Rs.13,000.00", 
+                    save: "Save Rs. 2,800.00", 
+                    img: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.8",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ],
+            couple: [
+                { 
+                    title: "Crysma Matching Royal Couple Set", 
+                    price: "Rs.28,500.00", 
+                    oldPrice: "Rs.33,000.00", 
+                    save: "Save Rs. 4,500.00", 
+                    img: "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=500", 
+                    rating: "4.9",
+                    thumbs: [
+                        "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=100",
+                        "https://images.unsplash.com/photo-1533139502658-0198f920d8e8?auto=format&fit=crop&q=80&w=100"
+                    ]
+                }
+            ]
+        };
+        function filterProducts(category) {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return; 
+            grid.innerHTML = '';
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active-tab'));
+            const activeTab = document.getElementById(`tab-${category}`);
+            if (activeTab) {
+                activeTab.classList.add('active-tab');
+            }
+            renderProducts(productsData[category] || [], 'product-grid');
+        }
+        function viewAllProducts() {
+            const grid = document.getElementById('product-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active-tab'));
+            const allProducts = [
+                ...productsData.men, 
+                ...productsData.women, 
+                ...productsData.couple,
+                ...productsData.coupleChain,
+                ...productsData.smartWatches,
+                ...productsData.strapWatches,
+                ...productsData.chainWatches
+            ];
+            renderProducts(allProducts, 'product-grid');
+        }
+        function performFullscreenSearch() {
+            const query = document.getElementById('fullscreenSearchInput').value.toLowerCase().trim();
+            let matchedProducts = [];
+            if (query === '') {
+                matchedProducts = [...productsData.men, ...productsData.women, ...productsData.couple, ...productsData.coupleChain, ...productsData.smartWatches, ...productsData.strapWatches, ...productsData.chainWatches];
+            } else if (query.includes('luxury') || query.includes('men')) {
+                matchedProducts = productsData.men;
+            } else if (query.includes('smart') || query.includes('women')) {
+                matchedProducts = productsData.women;
+            } else if (query.includes('couple')) {
+                matchedProducts = productsData.couple;
+            } else {
+                let allProducts = [...productsData.men, ...productsData.women, ...productsData.couple, ...productsData.coupleChain, ...productsData.smartWatches, ...productsData.strapWatches, ...productsData.chainWatches];
+                matchedProducts = allProducts.filter(prod => prod.title.toLowerCase().includes(query));
+            }
+            renderSearchProducts(matchedProducts);
+        }
+        function renderSearchProducts(items) {
+            const container = document.getElementById('searchModalResults');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center text-muted py-5 fs-4">No watches found matching your search.</div>';
+                return;
+            }
+            items.forEach(prod => {
+                let thumbsHTML = '<div class="mini-watch-thumbs">';
+                prod.thumbs.forEach(thumb => {
+                    thumbsHTML += `<img src="${thumb}" alt="thumb">`;
+                });
+                thumbsHTML += '</div>';
+                const col = document.createElement('div');
+                col.className = 'col-md-3 col-6';
+                col.innerHTML = `
+                    <div class="product-card">
+                        <span class="sale-tag">${prod.save}</span>
+                        <img src="${prod.img}" alt="${prod.title}" class="product-img">
+                        <h6 class="product-title">${prod.title}</h6>
+                        <div class="product-price mb-2">${prod.price} <span class="old-price">${prod.oldPrice}</span></div>
+                        ${thumbsHTML}
+                        <div class="rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span>(${prod.rating})</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+        function renderProducts(items, elementId) {
+            const grid = document.getElementById(elementId);
+            items.forEach(prod => {
+                let thumbsHTML = '<div class="mini-watch-thumbs">';
+                prod.thumbs.forEach(thumb => {
+                    thumbsHTML += `<img src="${thumb}" alt="thumb">`;
+                });
+                thumbsHTML += '</div>';
+                const col = document.createElement('div');
+                col.className = 'col-md-3 col-6';
+                col.innerHTML = `
+                    <div class="product-card">
+                        <span class="sale-tag">${prod.save}</span>
+                        <img src="${prod.img}" alt="${prod.title}" class="product-img">
+                        <h6 class="product-title">${prod.title}</h6>
+                        <div class="product-price mb-2">${prod.price} <span class="old-price">${prod.oldPrice}</span></div>
+                        ${thumbsHTML}
+                        <div class="rating-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span>(${prod.rating})</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(col);
+            });
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            filterProducts('men');
+
+            const searchInput = document.getElementById('fullscreenSearchInput');
+            if(searchInput) {
+                searchInput.addEventListener('input', performFullscreenSearch);
+            }
+            const slides = document.querySelectorAll('.hero-bg');
+            let currentSlide = 0;
+            const slideInterval = 5000;
+
+            function nextSlide() {
+                if (slides.length > 0) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    slides[currentSlide].classList.add('active');
+                }
+            }
+            if (slides.length > 1) {
+                setInterval(nextSlide, slideInterval);
+            }
+        });
+    </script>
+</body>
+</html>

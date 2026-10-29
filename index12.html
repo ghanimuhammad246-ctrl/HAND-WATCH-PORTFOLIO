@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buttons in Html</title>
+</head>
+     <style>
+        .testbtn {
+            background-color: black;
+            color: red;
+            font-size: 15px;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+        .testbtn:hover{
+            background-color: antiquewhite;
+        }
+     </style>
+<body>
+    <h1>HTML BUTTONS</h1>
+    <P>This is a basic HTML button. It can be clicked, but it will not do anything until you add an action to it.</P>
+
+    <button>Click Me</button>
+    <p>Styled button <code>onclick</code>:</p>
+    <button class="testbtn">Green Button</button>
+    <button disabled>Disabled Button</button>
+    <button class="testbtn" onclick="alert('Hello!')">Green Button</button>
+</body>
+</html>

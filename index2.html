@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TABLE HEADER</title>
+</head>
+<Style>
+    table, th, td{
+        border:1px solid red;
+        background-color: aqua;
+        border-radius: 10px;
+        border-style: dotted;
+        border-spacing: 15px;
+    }
+    th,td{
+        padding: 15px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 40px;
+    }
+</Style>
+<body>
+    <h2>th elements define table headers</h2>
+
+    <table style="width:100%">
+        <tr>
+            <th colspan="2">Person 1</th>
+            <th rowspan="2">Person 2</th>
+            <th>Person 3</th>
+        </tr>
+        <tr style="height: 20px;">
+            <td>Email</td>
+            <td>Tobias</td>
+            <td>linus</td>
+        </tr>
+        <tr>
+            <td>16</td>
+            <td>14</td>
+            <td>10</td>
+        </tr>
+    </table>
+    <p>To Understand the example better,We have added borders to the table.</p>
+</body>
+</html>

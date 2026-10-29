@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delphro Flow - Dashboard</title>
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .sidebar { width: 260px; background-color: #0A395A !important; }
+    .fs-7 { font-size: 0.875rem; }
+    .tracking-wide { letter-spacing: 0.1em; }
+    .progress-sm { height: 6px; }   
+
+    .w-15 { width: 15%; }
+    .w-25 { width: 25%; }
+    .w-50 { width: 50%; }
+    .w-75 { width: 75%; }   
+
+    .btn-brand { background-color: #0dcaf0; color: white; border: none; }
+    .btn-brand:hover { background-color: #0bb5d8; color: white; }
+    .text-brand { color: #0dcaf0; }
+    .text-purple { color: #6f42c1; }
+    .text-orange { color: #fd7e14; }
+    .text-green { color: #198754; }    
+
+    .view-section { display: none; }
+    .view-section.active-view { display: block; }    
+
+    .pipeline-board { display: flex; gap: 1.5rem; overflow-x: auto; padding-bottom: 1rem; }
+    .pipeline-col { min-width: 260px; flex: 1; }
+    .pipeline-card { background: white; border: none; border-radius: 0.5rem; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.05); }    
+
+    .chat-bubble { padding: 1rem 1.25rem; border-radius: 1rem; margin-bottom: 1rem; max-width: 80%; }
+    .chat-bubble-left { background-color: #f8f9fa; align-self: flex-start; }
+    .chat-bubble-right { background-color: #e0f2fe; align-self: flex-end; }
+    .chat-container { height: calc(100vh - 350px); overflow-y: auto; display: flex; flex-direction: column; }
+    .inbox-list { height: calc(100vh - 250px); overflow-y: auto; }    
+
+    .sub-nav-item { padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; cursor: pointer; transition: background-color 0.2s; }
+    .sub-nav-item:hover { background-color: #f8f9fa; }
+    .sub-nav-item.active { background-color: #e0f2fe; color: #084298; }
+    .sub-nav-item.active .text-secondary { color: rgb(66, 147, 228) !important; }   
+
+    .cursor-pointer { cursor: pointer; }
+    .min-w-150 { min-width: 150px; }
+    .table-hover tbody tr:hover { background-color: #f8f9fa; }
+    .bg-brand { background-color: #0AABD9; }
+    .nav-pills .nav-link.active { background-color: #0AABD9; }
+    .sub-nav-item { cursor: pointer; }
+    .sub-nav-item:hover { opacity: 0.8; }
+  </style>
+</head>
+<body class="bg-body-tertiary">
+  <div class="d-flex vh-100 overflow-hidden">    
+
+    <aside class="bg-dark text-white d-flex flex-column flex-shrink-0 p-4 sidebar">
+      <a href="#" class="text-white text-decoration-none mb-4 d-block" onclick="openDashboard(event)">
+        <h5 class="fw-bold m-0 tracking-wide text-uppercase text-nowrap">DELPHRO FLOW</h5>
+        <small class="text-secondary d-block fs-7">AI Business OS</small>
+      </a>
+
+      <ul class="nav nav-pills flex-column mb-auto gap-2">
+        <li class="nav-item">
+          <a href="#" class="nav-link active rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Dashboard')">Dashboard</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Leads')">Leads</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Pipeline')">Pipeline</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Inbox')">Inbox</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Automations')">Automations</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'AI Assistant')">AI Assistant</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Analytics')">Analytics</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Integrations')">Integrations</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Team')">Team</a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white-50 rounded-3 py-2 px-3 nav-item-btn" onclick="switchTab(this, 'Settings')">Settings</a>
+        </li>
+      </ul>
+    </aside>
+    <main class="flex-grow-1 overflow-auto p-4 p-md-5">
+      <div id="alertContainer"></div>
+      <header class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+          <h2 class="fw-bold m-0 text-dark" id="pageTitle">Dashboard</h2>
+          <p class="text-secondary small m-0 mt-1" id="pageSubtitle">Overview of leads, sales, automations and team activity</p>
+        </div>
+        <div id="headerActions">
+          <button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+          </button>
+        </div>
+      </header>
+      <!-- DASHBOARD VIEW -->
+      <div id="dashboardView" class="view-section active-view">
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+              <span class="text-secondary small">Total Leads</span>
+              <h2 class="fw-bold m-0 mt-1 text-dark" id="totalLeadsCount">1,248</h2>
+              <small class="text-success fw-medium mt-2 d-block">+12.4% this month</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+              <span class="text-secondary small">Qualified</span>
+              <h2 class="fw-bold m-0 mt-1 text-dark" id="qualifiedLeadsCount">386</h2>
+              <small class="text-success fw-medium mt-2 d-block">+8.2% this month</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+              <span class="text-secondary small">Won Deals</span>
+              <h2 class="fw-bold m-0 mt-1 text-dark">92</h2>
+              <small class="text-success fw-medium mt-2 d-block">+16.1% this month</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-3">
+              <span class="text-secondary small">Automation Runs</span>
+              <h2 class="fw-bold m-0 mt-1 text-dark">8,942</h2>
+              <small class="text-success fw-medium mt-2 d-block">99.2% this month</small>
+            </div>
+          </div>
+        </div>       
+        <div class="row g-4 mb-4"> 
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <div class="mb-3">
+                <h5 class="fw-bold m-0 text-dark">Recent Leads</h5>
+                <small class="text-secondary">Latest prospects entering your pipeline</small>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-borderless align-middle m-0" id="leadsTable">
+                  <thead>
+                    <tr class="text-secondary fs-7 border-bottom">
+                      <th class="fw-normal ps-0">Name</th>
+                      <th class="fw-normal">Company</th>
+                      <th class="fw-normal">Source</th>
+                      <th class="fw-normal">Status</th>
+                      <th class="fw-normal text-end pe-0">Value</th>
+                    </tr>
+                  </thead>
+                  <tbody id="leadsTableBody" class="fs-7">
+                    <tr>
+                      <td class="ps-0 fw-bold text-dark">Ali Raza</td>
+                      <td class="text-secondary">TechNova</td>
+                      <td class="text-secondary">WhatsApp</td>
+                      <td><span class="badge text-bg-light text-primary border border-primary-subtle fw-normal">Qualified</span></td>
+                      <td class="text-end pe-0 fw-semibold text-dark">$2,400</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-0 fw-bold text-dark">Sarah Khan</td>
+                      <td class="text-secondary">BrightMart</td>
+                      <td class="text-secondary">Website</td>
+                      <td><span class="badge text-bg-light text-info border border-info-subtle fw-normal">New</span></td>
+                      <td class="text-end pe-0 fw-semibold text-dark">$1,250</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-0 fw-bold text-dark">Omar Siddiq</td>
+                      <td class="text-secondary">CloudPeak</td>
+                      <td class="text-secondary">LinkedIn</td>
+                      <td><span class="badge text-bg-light text-primary border border-primary-subtle fw-normal">Contacted</span></td>
+                      <td class="text-end pe-0 fw-semibold text-dark">$3,800</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-0 fw-bold text-dark">Mina Shah</td>
+                      <td class="text-secondary">Urbanly</td>
+                      <td class="text-secondary">Referral</td>
+                      <td><span class="badge text-bg-light text-primary border border-primary-subtle fw-normal">Proposal</span></td>
+                      <td class="text-end pe-0 fw-semibold text-dark">$5,100</td>
+                    </tr>
+                    <tr>
+                      <td class="ps-0 fw-bold text-dark">Hamza Malik</td>
+                      <td class="text-secondary">NextLayer</td>
+                      <td class="text-secondary">WhatsApp</td>
+                      <td><span class="badge text-bg-light text-success border border-success-subtle fw-normal">Won</span></td>
+                      <td class="text-end pe-0 fw-semibold text-dark">$4,600</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 d-flex flex-column gap-4">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+              <h5 class="fw-bold mb-3 text-dark">Pipeline Snapshot</h5>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-secondary fs-7 mb-1">
+                  <span>New</span><strong class="text-dark">124</strong>
+                </div>
+                <div class="progress progress-sm"><div class="progress-bar bg-primary w-75" role="progressbar"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-secondary fs-7 mb-1">
+                  <span>Qualified</span><strong class="text-dark">86</strong>
+                </div>
+                <div class="progress progress-sm"><div class="progress-bar bg-primary w-50" role="progressbar"></div></div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between text-secondary fs-7 mb-1">
+                  <span>Proposal</span><strong class="text-dark">42</strong>
+                </div>
+                <div class="progress progress-sm"><div class="progress-bar bg-primary w-25" role="progressbar"></div></div>
+              </div>
+              <div>
+                <div class="d-flex justify-content-between text-secondary fs-7 mb-1">
+                  <span>Won</span><strong class="text-dark">28</strong>
+                </div>
+                <div class="progress progress-sm"><div class="progress-bar bg-primary w-15" role="progressbar"></div></div>
+              </div>
+            </div>
+            <!-- Automation Activity Widget -->
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+              <h5 class="fw-bold mb-3 text-dark">Automation Activity</h5>
+              <div class="d-flex flex-column gap-3 fs-7">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-secondary">WhatsApp Lead Router</span>
+                  <span class="badge text-bg-light text-success fw-normal">Running</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-secondary">Follow-up Sequence</span>
+                  <span class="badge text-bg-light text-success fw-normal">Healthy</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-secondary">AI Qualification Agent</span>
+                  <span class="badge text-bg-light text-success fw-normal">Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>       
+        <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+          <h5 class="fw-bold mb-3 text-dark">Today</h5>
+          <div class="d-flex flex-column gap-3" id="todayActivityList">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+              <span class="fw-bold text-dark fs-7">Review 12 new WhatsApp leads</span>
+              <span class="text-secondary fs-7">Sales • 10:30 AM</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+              <span class="fw-bold text-dark fs-7">Approve AI-generated proposal for CloudPeak</span>
+              <span class="text-secondary fs-7">AI Agent • 12:00 PM</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-dark fs-7">Check failed workflow: CRM Sync</span>
+              <span class="text-secondary fs-7">Automation • 2:15 PM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- LEADS VIEW -->
+      <div id="leadsView" class="view-section">
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <input type="text" class="form-control border-0 shadow-sm py-2 px-3 rounded-3" placeholder="Search by name, company or phone...">
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-white bg-white border-0 shadow-sm py-2 px-4 fw-semibold text-dark w-100 text-start rounded-3">Filters</button>
+          </div>
+        </div>       
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">All Leads</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">1,248</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">New</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">248</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Qualified</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">386</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Won</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">92</h2>
+            </div>
+          </div>
+        </div>
+        <!-- Leads Table -->
+        <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+          <div class="table-responsive">
+            <table class="table table-borderless align-middle m-0 table-hover">
+              <thead>
+                <tr class="text-secondary fs-7 border-bottom">
+                  <th class="fw-normal ps-0 py-3">Name</th>
+                  <th class="fw-normal py-3">Company</th>
+                  <th class="fw-normal py-3">Source</th>
+                  <th class="fw-normal py-3">Owner</th>
+                  <th class="fw-normal py-3">Status</th>
+                  <th class="fw-normal text-end pe-0 py-3">Value</th>
+                </tr>
+              </thead>
+              <tbody id="leadsViewTableBody" class="fs-7">
+                <tr class="border-bottom">
+                  <td class="ps-0 fw-bold text-dark py-3">Ali Raza</td>
+                  <td class="text-secondary py-3">TechNova</td>
+                  <td class="text-secondary py-3">WhatsApp</td>
+                  <td class="text-secondary py-3">Ayesha</td>
+                  <td class="py-3"><span class="text-dark">Qualified</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$2,400</td>
+                </tr>
+                <tr class="border-bottom">
+                  <td class="ps-0 fw-bold text-dark py-3">Sarah Khan</td>
+                  <td class="text-secondary py-3">BrightMart</td>
+                  <td class="text-secondary py-3">Website</td>
+                  <td class="text-secondary py-3">Hamza</td>
+                  <td class="py-3"><span class="text-dark">New</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$1,250</td>
+                </tr>
+                <tr class="border-bottom">
+                  <td class="ps-0 fw-bold text-dark py-3">Omar Siddiq</td>
+                  <td class="text-secondary py-3">CloudPeak</td>
+                  <td class="text-secondary py-3">LinkedIn</td>
+                  <td class="text-secondary py-3">Ayesha</td>
+                  <td class="py-3"><span class="text-dark">Contacted</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$3,800</td>
+                </tr>
+                <tr class="border-bottom">
+                  <td class="ps-0 fw-bold text-dark py-3">Mina Shah</td>
+                  <td class="text-secondary py-3">Urbanly</td>
+                  <td class="text-secondary py-3">Referral</td>
+                  <td class="text-secondary py-3">Bilal</td>
+                  <td class="py-3"><span class="text-dark">Proposal</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$5,100</td>
+                </tr>
+                <tr class="border-bottom">
+                  <td class="ps-0 fw-bold text-dark py-3">Hamza Malik</td>
+                  <td class="text-secondary py-3">NextLayer</td>
+                  <td class="text-secondary py-3">WhatsApp</td>
+                  <td class="text-secondary py-3">Bilal</td>
+                  <td class="py-3"><span class="text-dark">Won</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$4,600</td>
+                </tr>
+                <tr>
+                  <td class="ps-0 fw-bold text-dark py-3">Nadia Noor</td>
+                  <td class="text-secondary py-3">ScaleHive</td>
+                  <td class="text-secondary py-3">Facebook</td>
+                  <td class="text-secondary py-3">Ayesha</td>
+                  <td class="py-3"><span class="text-dark">Qualified</span></td>
+                  <td class="text-end pe-0 fw-semibold text-brand py-3">$2,950</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- PIPELINE VIEW -->
+      <div id="pipelineView" class="view-section">
+        <div class="pipeline-board">
+          <div class="pipeline-col" id="pipeline-new-col">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+              <span class="fw-bold text-dark fs-6">New</span>
+              <span class="text-secondary small">6</span>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">TechNova</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Ali Raza</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$1200</span>
+                <span class="text-brand fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">BrightMart</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Sarah Khan</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$1850</span>
+                <span class="text-brand fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">CloudPeak</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Omar Siddiq</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$2500</span>
+                <span class="text-brand fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">Urbanly</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Mina Shah</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3150</span>
+                <span class="text-brand fs-7">WhatsApp</span>
+              </div>
+            </div>
+          </div>         
+          <div class="pipeline-col">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+              <span class="fw-bold text-dark fs-6">Contacted</span>
+              <span class="text-secondary small">5</span>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">BrightMart</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Ali Raza</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$1850</span>
+                <span class="text-primary fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">CloudPeak</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Sarah Khan</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$2500</span>
+                <span class="text-primary fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">Urbanly</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Omar Siddiq</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3150</span>
+                <span class="text-primary fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">NextLayer</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Mina Shah</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3800</span>
+                <span class="text-primary fs-7">WhatsApp</span>
+              </div>
+            </div>
+          </div>         
+          <div class="pipeline-col">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+              <span class="fw-bold text-dark fs-6">Qualified</span>
+              <span class="text-secondary small">4</span>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">CloudPeak</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Ali Raza</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$2500</span>
+                <span class="text-purple fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">Urbanly</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Sarah Khan</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3150</span>
+                <span class="text-purple fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">NextLayer</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Omar Siddiq</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3800</span>
+                <span class="text-purple fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">TechNova</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Mina Shah</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$4450</span>
+                <span class="text-purple fs-7">WhatsApp</span>
+              </div>
+            </div>
+          </div>          
+          <div class="pipeline-col">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+              <span class="fw-bold text-dark fs-6">Proposal</span>
+              <span class="text-secondary small">3</span>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">Urbanly</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Ali Raza</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3150</span>
+                <span class="text-orange fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">NextLayer</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Sarah Khan</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3800</span>
+                <span class="text-orange fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">TechNova</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Omar Siddiq</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$4450</span>
+                <span class="text-orange fs-7">WhatsApp</span>
+              </div>
+            </div>
+          </div>          
+          <div class="pipeline-col">
+            <div class="d-flex justify-content-between align-items-center mb-3 px-1">
+              <span class="fw-bold text-dark fs-6">Won</span>
+              <span class="text-secondary small">3</span>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">NextLayer</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Ali Raza</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$3800</span>
+                <span class="text-green fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">TechNova</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Sarah Khan</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$4450</span>
+                <span class="text-green fs-7">WhatsApp</span>
+              </div>
+            </div>
+            <div class="pipeline-card">
+              <h6 class="fw-bold text-dark m-0">BrightMart</h6>
+              <p class="text-secondary fs-7 m-0 mt-1 mb-3">Omar Siddiq</p>
+              <div class="d-flex justify-content-between align-items-center fw-semibold">
+                <span class="text-dark">$5100</span>
+                <span class="text-green fs-7">WhatsApp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- INBOX VIEW -->
+      <div id="inboxView" class="view-section">
+        <div class="row g-4 h-100">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-3 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark px-2">Conversations</h6>
+              <div class="inbox-list d-flex flex-column pe-2">
+                <div class="sub-nav-item active d-flex flex-column gap-1">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">Ali Raza</span>
+                    <span class="fs-7 text-secondary">2m</span>
+                  </div>
+                  <span class="fs-7 text-secondary text-truncate">Can you share pricing?</span>
+                </div>               
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark">Sarah Khan</span>
+                    <span class="fs-7 text-secondary">12m</span>
+                  </div>
+                  <span class="fs-7 text-secondary text-truncate">Thanks, got it.</span>
+                </div>                
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark">Omar Siddiq</span>
+                    <span class="fs-7 text-secondary">35m</span>
+                  </div>
+                  <span class="fs-7 text-secondary text-truncate">Need integration details</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark">Mina Shah</span>
+                    <span class="fs-7 text-secondary">1h</span>
+                  </div>
+                  <span class="fs-7 text-secondary text-truncate">Let's schedule a call</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-dark">Hamza Malik</span>
+                    <span class="fs-7 text-secondary">3h</span>
+                  </div>
+                  <span class="fs-7 text-secondary text-truncate">Proposal received</span>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100 d-flex flex-column">
+              <!-- Chat Header -->
+              <div class="mb-4">
+                <h6 class="fw-bold m-0 text-dark">Ali Raza &bull; TechNova</h6>
+                <small class="text-success fw-semibold">Online</small>
+              </div>              
+              <div class="chat-container flex-grow-1 pe-2 mt-2">
+                <div class="chat-bubble chat-bubble-left text-dark fs-7">
+                  Hi, I saw your WhatsApp automation demo.
+                </div>
+                <div class="chat-bubble chat-bubble-right text-dark fs-7">
+                  Great! What would you like to automate?
+                </div>
+                <div class="chat-bubble chat-bubble-left text-dark fs-7">
+                  Mostly lead qualification and follow-ups.
+                </div>
+                <div class="chat-bubble chat-bubble-right text-dark fs-7">
+                  We can automate both. I can share the Growth plan.
+                </div>
+              </div>              
+              <div class="mt-4 pt-3 border-top">
+                <div class="d-flex gap-3 text-secondary fs-7 align-items-center">
+                  <span class="flex-grow-1 text-muted">Type a message...</span>
+                  <span class="cursor-pointer">Attach</span>
+                  <span class="cursor-pointer">AI Suggest</span>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark">Contact</h6>
+              <div class="mb-3">
+                <span class="text-secondary fs-7 d-block mb-1">Company</span>
+                <span class="text-dark fs-7">TechNova</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-secondary fs-7 d-block mb-1">Stage</span>
+                <span class="text-dark fs-7">Qualified</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-secondary fs-7 d-block mb-1">Owner</span>
+                <span class="text-dark fs-7">Ayesha</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-secondary fs-7 d-block mb-1">Value</span>
+                <span class="text-dark fs-7">$2,400</span>
+              </div>
+              <div class="mb-3">
+                <span class="text-secondary fs-7 d-block mb-1">Last touch</span>
+                <span class="text-dark fs-7">2 min ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- AI ASSISTANT VIEW -->
+      <div id="aiAssistantView" class="view-section">
+        <div class="row g-4 h-100">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-3 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark px-2">Recent Chats</h6>
+              <div class="inbox-list d-flex flex-column pe-2">
+                <div class="sub-nav-item active d-flex flex-column gap-1">
+                  <span class="fs-7 fw-semibold">Today's lead summary</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <span class="fs-7 text-dark">Why did conversion drop?</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <span class="fs-7 text-dark">Prepare CloudPeak proposal</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <span class="fs-7 text-dark">Follow up hot leads</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1 mt-2">
+                  <span class="fs-7 text-dark">Pipeline forecast</span>
+                </div>
+              </div>
+            </div>
+          </div>          
+          <div class="col-md-9">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100 d-flex flex-column">
+              <div class="mb-4">
+                <h5 class="fw-bold m-0 text-dark">Delphro AI</h5>
+                <small class="text-secondary">Connected to CRM, WhatsApp and Automations</small>
+              </div>             
+              <div class="chat-container flex-grow-1 pe-2 align-items-center pt-4">
+                <div class="fs-7 text-dark mb-5 text-end w-100 pe-4">
+                  Which leads should my sales team call first?
+                </div>               
+                <div class="fs-7 text-dark w-100 ps-2 mb-3">
+                  I found 3 high-priority leads based on intent, score and recent activity:
+                </div>                
+                <div class="w-100 ps-4 mb-4">
+                  <div class="row mb-3">
+                    <div class="col-3 fw-bold fs-7 text-dark">1. Ali Raza</div>
+                    <div class="col-9 fs-7 text-secondary">Score 92 &bull; Asked for pricing 2m ago</div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-3 fw-bold fs-7 text-dark">2. Mina Shah</div>
+                    <div class="col-9 fs-7 text-secondary">Score 88 &bull; Requested sales call</div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-3 fw-bold fs-7 text-dark">3. Omar Siddiq</div>
+                    <div class="col-9 fs-7 text-secondary">Score 81 &bull; Viewed Integration page twice</div>
+                  </div>
+                </div>                
+                <div class="w-100 ps-2 mt-4">
+                  <div class="fs-7 text-secondary mb-3">Suggested actions</div>
+                  <div class="d-flex gap-5">
+                    <span class="text-brand fs-7 fw-semibold cursor-pointer">Create call tasks</span>
+                    <span class="text-brand fs-7 fw-semibold cursor-pointer">Send WhatsApp follow-up</span>
+                    <span class="text-brand fs-7 fw-semibold cursor-pointer">Build proposal</span>
+                  </div>
+                </div>
+              </div>            
+              <div class="mt-4 pt-3 border-top">
+                <div class="text-secondary fs-7">
+                  Ask Delphro AI anything about your business...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- AUTOMATIONS VIEW -->
+      <div id="automationsView" class="view-section">
+        <!-- Metrics -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Active workflows</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">18</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Runs today</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">1,284</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Success rate</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">99.2%</h2>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Time saved</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">46h</h2>
+            </div>
+          </div>
+        </div>
+        <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+          <div class="d-flex flex-column gap-4" id="automations-list-container">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+              <div>
+                <h6 class="fw-bold m-0 text-dark mb-1">WhatsApp Lead Router</h6>
+                <span class="text-secondary fs-7">New WhatsApp lead &rarr; AI qualify &rarr; CRM</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center min-w-150">
+                <span class="text-success fw-semibold fs-7">Active</span>
+                <span class="text-secondary fs-7">842 runs</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+              <div>
+                <h6 class="fw-bold m-0 text-dark mb-1">Follow-up Sequence</h6>
+                <span class="text-secondary fs-7">Qualified lead &rarr; wait &rarr; message</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center min-w-150">
+                <span class="text-success fw-semibold fs-7">Active</span>
+                <span class="text-secondary fs-7">318 runs</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+              <div>
+                <h6 class="fw-bold m-0 text-dark mb-1">Proposal Reminder</h6>
+                <span class="text-secondary fs-7">Proposal sent &rarr; 2 days &rarr; follow-up</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center min-w-150">
+                <span class="text-success fw-semibold fs-7">Active</span>
+                <span class="text-secondary fs-7">96 runs</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3">
+              <div>
+                <h6 class="fw-bold m-0 text-dark mb-1">CRM Sync</h6>
+                <span class="text-secondary fs-7">Lead updated &rarr; sync external CRM</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center min-w-150">
+                <span class="text-warning fw-semibold fs-7">Paused</span>
+                <span class="text-secondary fs-7">28 runs</span>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="fw-bold m-0 text-dark mb-1">Lost Lead Re-engagement</h6>
+                <span class="text-secondary fs-7">Lost stage &rarr; wait 30d &rarr; campaign</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center min-w-150">
+                <span class="text-secondary fw-semibold fs-7">Draft</span>
+                <span class="text-secondary fs-7">&mdash;</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- ANALYTICS VIEW -->
+      <div id="analyticsView" class="view-section">
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Leads</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">1,248</h2>
+              <small class="text-success fw-medium mt-2 d-block">+12.4%</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Conversion</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">18.6%</h2>
+              <small class="text-success fw-medium mt-2 d-block">+2.1%</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Revenue</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">$42.8k</h2>
+              <small class="text-success fw-medium mt-2 d-block">+16.8%</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+              <span class="text-secondary fs-7">Avg response</span>
+              <h2 class="fw-bold m-0 mt-2 text-dark">1m 42s</h2>
+              <small class="text-success fw-medium mt-2 d-block">-28%</small>
+            </div>
+          </div>
+        </div>
+        <div class="row g-4 mb-4">
+          <div class="col-lg-8">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark">Lead &rarr; Customer Conversion</h6>
+              <div class="d-flex flex-column gap-3 mt-4 px-2">
+                <div class="d-flex align-items-center"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+                <div class="d-flex align-items-center ps-5"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+                <div class="d-flex align-items-center ps-5 ms-4"><div class="bg-brand rounded-pill" style="height: 4px; width: 50px;"></div></div>
+                <div class="d-flex align-items-center ps-5 ms-5 ps-4"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+                <div class="d-flex align-items-center ps-5 ms-5 ps-5 ms-3"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+                <div class="d-flex align-items-center ps-5 ms-5 ps-5 ms-5 ps-2"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+                <div class="d-flex align-items-center ps-5 ms-5 ps-5 ms-5 ps-5"><div class="bg-brand rounded-pill" style="height: 4px; width: 60px;"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark">Lead Sources</h6>
+              <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                  <span class="fs-7 text-dark">WhatsApp</span><span class="fw-bold text-dark fs-7">42%</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                  <span class="fs-7 text-dark">Website</span><span class="fw-bold text-dark fs-7">26%</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                  <span class="fs-7 text-dark">LinkedIn</span><span class="fw-bold text-dark fs-7">14%</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                  <span class="fs-7 text-dark">Referral</span><span class="fw-bold text-dark fs-7">10%</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fs-7 text-dark">Facebook</span><span class="fw-bold text-dark fs-7">8%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+        <!-- Automation Performance -->
+        <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+          <h6 class="fw-bold mb-4 text-dark">Automation Performance</h6>
+          <div class="d-flex flex-column gap-3">
+            <div class="row align-items-center border-bottom pb-3">
+              <div class="col-4 fw-bold fs-7 text-dark">WhatsApp Lead Router</div>
+              <div class="col-3 fs-7 text-secondary">842</div>
+              <div class="col-3 fs-7 text-success">99.8%</div>
+              <div class="col-2 fs-7 text-secondary">1.8s</div>
+            </div>
+            <div class="row align-items-center border-bottom pb-3">
+              <div class="col-4 fw-bold fs-7 text-dark">Follow-up Sequence</div>
+              <div class="col-3 fs-7 text-secondary">318</div>
+              <div class="col-3 fs-7 text-success">99.1%</div>
+              <div class="col-2 fs-7 text-secondary">4.2s</div>
+            </div>
+            <div class="row align-items-center border-bottom pb-3">
+              <div class="col-4 fw-bold fs-7 text-dark">Proposal Reminder</div>
+              <div class="col-3 fs-7 text-secondary">96</div>
+              <div class="col-3 fs-7 text-success">98.9%</div>
+              <div class="col-2 fs-7 text-secondary">2.4s</div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-4 fw-bold fs-7 text-dark">CRM Sync</div>
+              <div class="col-3 fs-7 text-secondary">28</div>
+              <div class="col-3 fs-7 text-success">92.2%</div>
+              <div class="col-2 fs-7 text-secondary">8.7s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- INTEGRATIONS VIEW -->
+      <div id="integrationsView" class="view-section">
+        <div class="d-flex gap-2 mb-4 overflow-auto">
+          <button class="btn btn-white bg-white border-0 shadow-sm px-4 py-2 fs-7 text-brand fw-semibold rounded-3">All</button>
+          <button class="btn btn-white bg-white border-0 shadow-sm px-4 py-2 fs-7 text-secondary rounded-3">Messaging</button>
+          <button class="btn btn-white bg-white border-0 shadow-sm px-4 py-2 fs-7 text-secondary rounded-3">CRM</button>
+          <button class="btn btn-white bg-white border-0 shadow-sm px-4 py-2 fs-7 text-secondary rounded-3">Marketing</button>
+          <button class="btn btn-white bg-white border-0 shadow-sm px-4 py-2 fs-7 text-secondary rounded-3">Productivity</button>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">WhatsApp Business</h6>
+              <span class="fs-7 text-secondary mb-4">Messaging</span>
+              <div class="mt-auto"><span class="text-success fw-semibold fs-7">Connected</span></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">Gmail</h6>
+              <span class="fs-7 text-secondary mb-4">Productivity</span>
+              <div class="mt-auto"><span class="text-success fw-semibold fs-7">Connected</span></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">Facebook Leads</h6>
+              <span class="fs-7 text-secondary mb-4">Marketing</span>
+              <div class="mt-auto"></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">HubSpot</h6>
+              <span class="fs-7 text-secondary mb-4">CRM</span>
+              <div class="mt-auto"><span class="text-success fw-semibold fs-7">Connected</span></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">n8n</h6>
+              <span class="fs-7 text-secondary mb-4">Automation</span>
+              <div class="mt-auto"><span class="text-success fw-semibold fs-7">Connected</span></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">Slack</h6>
+              <span class="fs-7 text-secondary mb-4">Productivity</span>
+              <div class="mt-auto"></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">Google Sheets</h6>
+              <span class="fs-7 text-secondary mb-4">Productivity</span>
+              <div class="mt-auto"><span class="text-success fw-semibold fs-7">Connected</span></div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-4 h-100 d-flex flex-column">
+              <div class="bg-light rounded-3 mb-3" style="width: 48px; height: 48px;"></div>
+              <h6 class="fw-bold m-0 text-dark mb-1">Stripe</h6>
+              <span class="fs-7 text-secondary mb-4">Payments</span>
+              <div class="mt-auto"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- TEAM VIEW -->
+      <div id="teamView" class="view-section">
+        <div class="row g-4 mb-4">
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark">Team Members</h6>
+              <div class="d-flex flex-column gap-3" id="team-members-container">
+                <div class="row align-items-center border-bottom pb-2">
+                  <div class="col-5 fw-bold fs-7 text-dark">Ayesha Khan</div>
+                  <div class="col-4 fs-7 text-secondary">Sales Manager</div>
+                  <div class="col-3 text-end fs-7 text-success">Online</div>
+                </div>
+                <div class="row align-items-center border-bottom pb-2">
+                  <div class="col-5 fw-bold fs-7 text-dark">Bilal Ahmed</div>
+                  <div class="col-4 fs-7 text-secondary">Admin</div>
+                  <div class="col-3 text-end fs-7 text-success">Online</div>
+                </div>
+                <div class="row align-items-center border-bottom pb-2">
+                  <div class="col-5 fw-bold fs-7 text-dark">Hamza Ali</div>
+                  <div class="col-4 fs-7 text-secondary">Sales Rep</div>
+                  <div class="col-3 text-end fs-7 text-warning">Away</div>
+                </div>
+                <div class="row align-items-center border-bottom pb-2">
+                  <div class="col-5 fw-bold fs-7 text-dark">Sara Noor</div>
+                  <div class="col-4 fs-7 text-secondary">Support</div>
+                  <div class="col-3 text-end fs-7 text-success">Online</div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-5 fw-bold fs-7 text-dark">AI Qualifier</div>
+                  <div class="col-4 fs-7 text-secondary">AI Agent</div>
+                  <div class="col-3 text-end fs-7 text-success">Active</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm bg-white p-4 rounded-3 h-100">
+              <h6 class="fw-bold mb-4 text-dark">Tasks</h6>
+              <div class="d-flex flex-column gap-3">
+                <div class="row align-items-center pb-3 border-bottom">
+                  <div class="col-7 fw-bold fs-7 text-dark">Call Ali Raza</div>
+                  <div class="col-3 fs-7 text-secondary">Ayesha</div>
+                  <div class="col-2 text-end fs-7 text-secondary">Today</div>
+                </div>
+                <div class="row align-items-center pb-3 border-bottom">
+                  <div class="col-7 fw-bold fs-7 text-dark">Review CRM Sync issue</div>
+                  <div class="col-3 fs-7 text-secondary">Bilal</div>
+                  <div class="col-2 text-end fs-7 text-secondary">Today</div>
+                </div>
+                <div class="row align-items-center pb-3 border-bottom">
+                  <div class="col-7 fw-bold fs-7 text-dark">Send case study</div>
+                  <div class="col-3 fs-7 text-secondary">Hamza</div>
+                  <div class="col-2 text-end fs-7 text-secondary">Tomorrow</div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-7 fw-bold fs-7 text-dark">Check nurture campaign</div>
+                  <div class="col-3 fs-7 text-secondary">Sara</div>
+                  <div class="col-2 text-end fs-7 text-secondary">Aug 27</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card border-0 shadow-sm bg-white p-4 rounded-3">
+          <h6 class="fw-bold mb-4 text-dark">Roles & Permissions</h6>
+          <div class="d-flex flex-column gap-4">
+            <div class="row align-items-center pb-3">
+              <div class="col-3 fw-bold fs-7 text-dark">Admin</div>
+              <div class="col-6 fs-7 text-secondary">Full workspace access</div>
+              <div class="col-3 text-end fs-7 text-secondary">5 users</div>
+            </div>
+            <div class="row align-items-center pb-3">
+              <div class="col-3 fw-bold fs-7 text-dark">Sales Manager</div>
+              <div class="col-6 fs-7 text-secondary">Leads, pipeline, analytics</div>
+              <div class="col-3 text-end fs-7 text-secondary">2 users</div>
+            </div>
+            <div class="row align-items-center pb-3">
+              <div class="col-3 fw-bold fs-7 text-dark">Sales Rep</div>
+              <div class="col-6 fs-7 text-secondary">Assigned leads and tasks</div>
+              <div class="col-3 text-end fs-7 text-secondary">6 users</div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-3 fw-bold fs-7 text-dark">Support</div>
+              <div class="col-6 fs-7 text-secondary">Inbox and customer records</div>
+              <div class="col-3 text-end fs-7 text-secondary">3 users</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- SETTINGS VIEW -->
+      <div id="settingsView" class="view-section">
+        <div class="row g-4 h-100">
+          <!-- Sidebar -->
+          <div class="col-md-3">
+            <div class="card border-0 shadow-sm bg-white p-3 rounded-3 h-100">
+              <div class="d-flex flex-column pe-2 gap-1">
+                <div class="sub-nav-item active d-flex flex-column gap-1">
+                  <span class="fs-7 fw-semibold">Company</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">Profile</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">Notifications</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">AI & Agents</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">WhatsApp</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">Security</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">API Keys</span>
+                </div>
+                <div class="sub-nav-item d-flex flex-column gap-1">
+                  <span class="fs-7 text-dark">Data & Privacy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="card border-0 shadow-sm bg-white p-5 rounded-3 h-100 d-flex flex-column">
+              <!-- Header -->
+              <div class="mb-5">
+                <h5 class="fw-bold m-0 text-dark mb-1">Company Settings</h5>
+                <small class="text-secondary">Manage the workspace identity used across automation and customer touchpoints.</small>
+              </div>
+              <div class="row g-4 flex-grow-1">
+                <div class="col-md-8 d-flex flex-column gap-4">
+                  <div>
+                    <label class="form-label fs-7 fw-bold text-dark">Company name</label>
+                    <div class="fs-7 text-secondary ps-2">Delphro</div>
+                  </div>
+                  <div>
+                    <label class="form-label fs-7 fw-bold text-dark">Website</label>
+                    <div class="fs-7 text-secondary ps-2">delphro.com</div>
+                  </div>
+                  <div>
+                    <label class="form-label fs-7 fw-bold text-dark">Industry</label>
+                    <div class="fs-7 text-secondary ps-2">Software & Automation</div>
+                  </div>
+                  <div>
+                    <label class="form-label fs-7 fw-bold text-dark">Timezone</label>
+                    <div class="fs-7 text-secondary ps-2">Asia/Karachi</div>
+                  </div>
+                  <div>
+                    <label class="form-label fs-7 fw-bold text-dark">Default currency</label>
+                    <div class="fs-7 text-secondary ps-2">PKR</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fs-7 fw-bold text-dark">Brand color</label>
+                  <div class="mt-1">
+                    <div class="rounded-3 shadow-sm bg-brand" style="width: 80px; height: 40px;"></div>
+                  </div>
+                </div>
+              </div> 
+              <div class="d-flex justify-content-end mt-5 pt-3">
+                <button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="subView" class="view-section">
+        <div class="card border-0 shadow-sm p-5 text-center bg-white rounded-3">
+          <i class="bi bi-folder2-open fs-1 text-secondary mb-3"></i>
+          <h4 class="fw-bold text-dark" id="subViewTitle">View Title</h4>
+          <p class="text-secondary">This section is loaded and ready for interaction.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <div class="modal fade" id="addLeadModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-bold">Add New Lead</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="leadForm" onsubmit="addLead(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Lead Name</label>
+              <input type="text" class="form-control" id="leadName" placeholder="e.g. Bilal Ahmed" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Company</label>
+              <input type="text" class="form-control" id="leadCompany" placeholder="e.g. Apex Corp" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Source</label>
+              <select class="form-select" id="leadSource" required>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Website">Website</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Referral">Referral</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Status</label>
+              <select class="form-select" id="leadStatus">
+                <option value="New">New</option>
+                <option value="Qualified">Qualified</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Proposal">Proposal</option>
+                <option value="Won">Won</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Deal Value ($)</label>
+              <input type="number" class="form-control" id="leadValue" placeholder="3500" required>
+            </div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-brand">Save Lead</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="newDealModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-bold">Add New Deal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="dealForm" onsubmit="addDeal(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Company / Deal Name</label>
+              <input type="text" class="form-control" id="dealCompany" placeholder="e.g. Acme Corp" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Contact Person</label>
+              <input type="text" class="form-control" id="dealContact" placeholder="e.g. John Doe" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Deal Value ($)</label>
+              <input type="number" class="form-control" id="dealValue" placeholder="5000" required>
+            </div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-brand">Save Deal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="newAutomationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-bold">Create Automation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="automationForm" onsubmit="addAutomation(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Automation Name</label>
+              <input type="text" class="form-control" id="automationName" placeholder="e.g. Welcome Sequence" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Description</label>
+              <input type="text" class="form-control" id="automationDesc" placeholder="e.g. New lead -> wait 5m -> email" required>
+            </div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-brand">Create Draft</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="inviteMemberModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header border-bottom-0 pb-0">
+          <h5 class="modal-title fw-bold">Invite Team Member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="inviteForm" onsubmit="addTeamMember(event)">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Name</label>
+              <input type="text" class="form-control" id="memberName" placeholder="e.g. Jane Doe" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold fs-7">Role</label>
+              <select class="form-select" id="memberRole" required>
+                <option value="Admin">Admin</option>
+                <option value="Sales Manager">Sales Manager</option>
+                <option value="Sales Rep">Sales Rep</option>
+                <option value="Support">Support</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer border-top-0">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-brand">Send Invite</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap 5.3 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    function switchTab(element, tabName) {
+      document.querySelectorAll('.nav-item-btn').forEach(link => {
+        link.classList.remove('active', 'text-white');
+        link.classList.add('text-white-50');
+      });
+      if (element) {
+        element.classList.add('active', 'text-white');
+        element.classList.remove('text-white-50');
+      }
+      document.querySelectorAll('.view-section').forEach(view => {
+        view.classList.remove('active-view');
+      });
+      const pageTitle = document.getElementById('pageTitle');
+      const pageSubtitle = document.getElementById('pageSubtitle');
+      const headerActions = document.getElementById('headerActions');
+      let viewId = 'dashboardView';
+      if (tabName === 'Dashboard') {
+        viewId = 'dashboardView';
+        pageTitle.textContent = 'Dashboard';
+        pageSubtitle.textContent = 'Overview of leads, sales, automations and team activity';
+        headerActions.innerHTML = '<button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#addLeadModal">+ Add Lead</button>';
+      } else if (tabName === 'Leads') {
+        viewId = 'leadsView';
+        pageTitle.textContent = 'Leads';
+        pageSubtitle.textContent = 'Manage prospects from every source in one place.';
+        headerActions.innerHTML = '<button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#addLeadModal">+ Add Lead</button>';
+      } else if (tabName === 'Pipeline') {
+        viewId = 'pipelineView';
+        pageTitle.textContent = 'Sales Pipeline';
+        pageSubtitle.textContent = 'Drag leads across stages as deals progress.';
+        headerActions.innerHTML = '<button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#newDealModal">+ New Deal</button>';
+      } else if (tabName === 'Inbox') {
+        viewId = 'inboxView';
+        pageTitle.textContent = 'WhatsApp Inbox';
+        pageSubtitle.textContent = 'Unified customer conversations with AI-assisted replies.';
+        headerActions.innerHTML = ''; // No top-right button in Inbox
+      } else if (tabName === 'AI Assistant') {
+        viewId = 'aiAssistantView';
+        pageTitle.textContent = 'AI Assistant';
+        pageSubtitle.textContent = 'Ask your business agent to analyze leads and take actions.';
+        headerActions.innerHTML = ''; // No top-right button in AI Assistant
+      } else if (tabName === 'Automations') {
+        viewId = 'automationsView';
+        pageTitle.textContent = 'Automations';
+        pageSubtitle.textContent = 'Build and manage lead, sales and support workflows.';
+        headerActions.innerHTML = '<button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#newAutomationModal">+ New Automation</button>';
+      } else if (tabName === 'Analytics') {
+        viewId = 'analyticsView';
+        pageTitle.textContent = 'Analytics';
+        pageSubtitle.textContent = 'Track acquisition, conversion and automation performance.';
+        headerActions.innerHTML = '';
+      } else if (tabName === 'Integrations') {
+        viewId = 'integrationsView';
+        pageTitle.textContent = 'Integrations';
+        pageSubtitle.textContent = 'Connect communication, CRM, marketing and automation tools.';
+        headerActions.innerHTML = '';
+      } else if (tabName === 'Team') {
+        viewId = 'teamView';
+        pageTitle.textContent = 'Team & Tasks';
+        pageSubtitle.textContent = 'Assign work, manage roles and monitor workload.';
+        headerActions.innerHTML = '<button class="btn btn-brand px-4 py-2 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#inviteMemberModal">+ Invite Member</button>';
+      } else if (tabName === 'Settings') {
+        viewId = 'settingsView';
+        pageTitle.textContent = 'Settings';
+        pageSubtitle.textContent = 'Configure company profile, AI behavior, notifications and security.';
+        headerActions.innerHTML = '';
+      } else {
+        viewId = 'subView';
+        pageTitle.textContent = tabName;
+        pageSubtitle.textContent = `Manage and view options for ${tabName.toLowerCase()}`;
+        headerActions.innerHTML = '';
+        document.getElementById('subViewTitle').textContent = tabName + ' Section';
+      }
+      const viewToShow = document.getElementById(viewId);
+      if (viewToShow) {
+        viewToShow.classList.add('active-view');
+      }
+    }
+    function openDashboard(e) {
+      if (e) e.preventDefault();
+      const firstNavBtn = document.querySelector('.nav-item-btn');
+      switchTab(firstNavBtn, 'Dashboard');
+    }
+    function addLead(e) {
+      e.preventDefault();
+      const name = document.getElementById('leadName').value;
+      const company = document.getElementById('leadCompany').value;
+      const source = document.getElementById('leadSource').value;
+      const status = document.getElementById('leadStatus').value;
+      const value = parseInt(document.getElementById('leadValue').value).toLocaleString();
+      const tableBody = document.getElementById('leadsTableBody');
+      const newRow = document.createElement('tr');
+      let badgeColor = 'text-primary border-primary-subtle';
+      if (status === 'New') badgeColor = 'text-info border-info-subtle';
+      if (status === 'Won') badgeColor = 'text-success border-success-subtle';
+      const dashboardRowHtml = `
+        <td class="ps-0 fw-bold text-dark">${name}</td>
+        <td class="text-secondary">${company}</td>
+        <td class="text-secondary">${source}</td>
+        <td><span class="badge text-bg-light ${badgeColor} border fw-normal">${status}</span></td>
+        <td class="text-end pe-0 fw-semibold text-dark">$${value}</td>
+      `;
+      const leadsRowHtml = `
+        <td class="ps-0 fw-bold text-dark py-3">${name}</td>
+        <td class="text-secondary py-3">${company}</td>
+        <td class="text-secondary py-3">${source}</td>
+        <td class="text-secondary py-3">You</td>
+        <td class="py-3"><span class="badge text-bg-light ${badgeColor} border fw-normal">${status}</span></td>
+        <td class="text-end pe-0 fw-semibold text-brand py-3">$${value}</td>
+      `;
+      const dashboardTableBody = document.getElementById('leadsTableBody');
+      if (dashboardTableBody) {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = dashboardRowHtml;
+        dashboardTableBody.prepend(newRow);
+      }
+      const leadsViewTableBody = document.getElementById('leadsViewTableBody');
+      if (leadsViewTableBody) {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = leadsRowHtml;
+        leadsViewTableBody.prepend(newRow);
+      }
+      document.getElementById('leadForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('addLeadModal'));
+      if (modal) modal.hide();
+      showAlert('Lead added successfully!', 'success');
+    }
+    function addDeal(event) {
+      event.preventDefault();
+      const company = document.getElementById('dealCompany').value;
+      const contact = document.getElementById('dealContact').value;
+      const value = document.getElementById('dealValue').value;
+      const newDealHtml = `
+        <div class="pipeline-card">
+          <h6 class="fw-bold text-dark m-0">${company}</h6>
+          <p class="text-secondary fs-7 m-0 mt-1 mb-3">${contact}</p>
+          <div class="d-flex justify-content-between align-items-center fw-semibold">
+            <span class="text-dark">$${value}</span>
+            <span class="text-brand fs-7">Website</span>
+          </div>
+        </div>
+      `;
+      const newColumn = document.getElementById('pipeline-new-col');
+      if (newColumn) {
+        newColumn.insertAdjacentHTML('beforeend', newDealHtml);
+      }
+      const countSpan = newColumn.querySelector('.text-secondary.small');
+      if (countSpan) {
+        countSpan.textContent = parseInt(countSpan.textContent || '0') + 1;
+      }
+      document.getElementById('dealForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('newDealModal'));
+      if (modal) modal.hide(); 
+      showAlert('New deal added to pipeline!', 'success');
+    }
+    function showAlert(message, type) {
+      const container = document.getElementById('alertContainer');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type} alert-dismissible fade show shadow-sm mb-4`;
+      alert.role = 'alert';
+      alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      container.appendChild(alert);
+      setTimeout(() => {
+        const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+        bsAlert.close();
+      }, 3000);
+    }
+    function addAutomation(event) {
+      event.preventDefault();
+      const name = document.getElementById('automationName').value;
+      const desc = document.getElementById('automationDesc').value;
+      const newAutoHtml = `
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mt-3">
+          <div>
+            <h6 class="fw-bold m-0 text-dark mb-1">${name}</h6>
+            <span class="text-secondary fs-7">${desc}</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center min-w-150">
+            <span class="text-secondary fw-semibold fs-7">Draft</span>
+            <span class="text-secondary fs-7">&mdash;</span>
+          </div>
+        </div>
+      `;
+      const container = document.getElementById('automations-list-container');
+      if (container) container.insertAdjacentHTML('afterbegin', newAutoHtml);
+      document.getElementById('automationForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('newAutomationModal'));
+      if (modal) modal.hide();
+      showAlert('Automation drafted successfully.', 'info');
+    }
+    function addTeamMember(event) {
+      event.preventDefault();
+      const name = document.getElementById('memberName').value;
+      const role = document.getElementById('memberRole').value;
+      const newMemberHtml = `
+        <div class="row align-items-center border-bottom pb-2 mt-2">
+          <div class="col-5 fw-bold fs-7 text-dark">${name}</div>
+          <div class="col-4 fs-7 text-secondary">${role}</div>
+          <div class="col-3 text-end fs-7 text-warning">Pending</div>
+        </div>
+      `;
+      const container = document.getElementById('team-members-container');
+      if (container) container.insertAdjacentHTML('afterbegin', newMemberHtml);
+      document.getElementById('inviteForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('inviteMemberModal'));
+      if (modal) modal.hide();
+      showAlert('Invitation sent successfully.', 'success');
+    }
+    document.addEventListener('click', function(e) {
+      const subNavItem = e.target.closest('.sub-nav-item');
+      if (subNavItem) {
+        // Find siblings
+        const parent = subNavItem.parentElement;
+        parent.querySelectorAll('.sub-nav-item').forEach(el => {
+          el.classList.remove('active');
+          const span = el.querySelector('span');
+          if (span && span.classList.contains('fw-semibold')) {
+            span.classList.remove('fw-semibold');
+            span.classList.add('text-dark');
+          }
+        });
+        subNavItem.classList.add('active');
+        const span = subNavItem.querySelector('span');
+        if (span && parent.closest('#settingsView')) {
+           span.classList.remove('text-dark');
+           span.classList.add('fw-semibold');
+        }
+      }
+      // Handle integration pills
+      const pill = e.target.closest('#integrationsView .btn');
+      if (pill) {
+        const parent = pill.parentElement;
+        parent.querySelectorAll('.btn').forEach(el => {
+          el.classList.remove('text-brand', 'fw-semibold');
+          el.classList.add('text-secondary');
+        });
+        pill.classList.remove('text-secondary');
+        pill.classList.add('text-brand', 'fw-semibold');
+      }
+    });
+  </script>
+</body>
+</html>

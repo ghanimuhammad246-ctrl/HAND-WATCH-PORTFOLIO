@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Converter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Time New Roman', serif, monospace;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(137, 241, 137);
+    }
+    .converter-card {
+      background-color: rgb(179, 246, 179);
+      padding: 40px 35px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      width: 100%;
+      max-width: 450px;
+    }
+    h2 {
+      text-align: center;
+      color: #00796b;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 35px;
+      letter-spacing: 0.5px;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+    .input-group label {
+      font-weight: bold;
+      color: #00796b;
+      font-size: 16px;
+      width: 40%;
+    }
+    .input-group input {
+      width: 58%;
+      padding: 8px 12px;
+      border: 1px solid #a3e4d7;
+      border-radius: 4px;
+      background-color: #e8f8f5;
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input-group input:focus {
+      border-color: #16a085;
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="converter-card">
+    <h2>Temperature Converter</h2>
+
+    <div class="input-group">
+      <label for="celsius">Celsius:</label>
+      <input type="number" id="celsius" placeholder="0" step="any">
+    </div>
+
+    <div class="input-group">
+      <label for="fahrenheit">Fahrenheit:</label>
+      <input type="number" id="fahrenheit" placeholder="0" step="any">
+    </div>
+
+    <div class="input-group">
+      <label for="kelvin">Kelvin:</label>
+      <input type="number" id="kelvin" placeholder="0" step="any">
+    </div>
+  </div>
+
+  <script>
+    const celsiusInput = document.getElementById('celsius');
+    const fahrenheitInput = document.getElementById('fahrenheit');
+    const kelvinInput = document.getElementById('kelvin');
+
+    celsiusInput.addEventListener('input', () => {
+      const c = parseFloat(celsiusInput.value);
+      if (isNaN(c)) {
+        fahrenheitInput.value = '';
+        kelvinInput.value = '';
+        return;
+      }
+      fahrenheitInput.value = ((c * 9/5) + 32).toFixed(2);
+      kelvinInput.value = (c + 273.15).toFixed(2);
+    });
+
+    fahrenheitInput.addEventListener('input', () => {
+      const f = parseFloat(fahrenheitInput.value);
+      if (isNaN(f)) {
+        celsiusInput.value = '';
+        kelvinInput.value = '';
+        return;
+      }
+      const c = (f - 32) * 5/9;
+      celsiusInput.value = c.toFixed(2);
+      kelvinInput.value = (c + 273.15).toFixed(2);
+    });
+
+    kelvinInput.addEventListener('input', () => {
+      const k = parseFloat(kelvinInput.value);
+      if (isNaN(k)) {
+        celsiusInput.value = '';
+        fahrenheitInput.value = '';
+        return;
+      }
+      const c = k - 273.15;
+      celsiusInput.value = c.toFixed(2);
+      fahrenheitInput.value = ((c * 9/5) + 32).toFixed(2);
+    });
+  </script>
+
+</body>
+</html>

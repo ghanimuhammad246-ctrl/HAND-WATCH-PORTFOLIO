@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2</title>
+</head>
+    <style>
+        body{
+            background-color: linen;
+            border: 2px solid burlywood;
+        }
+        #h1{
+            text-align: center;
+            font-size: 15px;
+            color: rgb(128, 85, 85);
+        }
+        #p{
+            text-align: center;
+            color: rgb(76, 50, 50);
+            font-size: 45px;
+        }
+        #p1{
+            text-align: center;
+        }
+        #p2{
+            text-align: center;
+            font-family: 'Times New Roman';
+        }
+        #p3{
+            text-align: center;
+            color: burlywood;
+        }
+        .divider-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+      color: #c89b27;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .p2{
+        text-align: center;
+        font-size: 20px;
+        color: rgb(76, 50, 50);
+    }
+    .wedding-schedule {
+        align-items: center;
+      width: 100%;
+      max-width: 520px;
+      padding: 20px;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: center;
+      padding: 24px 0;
+    }
+    .event-item:not(:last-child) {
+        align-items: center;
+      border-bottom: 1px solid #EADBCC;
+    }
+    .event-date {
+      align-items: center;
+      width: 110px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #4A1A12;
+      text-align: right;
+      padding-right: 20px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .event-details {
+      align-items: center;
+      border-left: 2px solid #C59A3F;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .event-title {
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #3B120C;
+      line-height: 1.2;
+    }
+    .event-info {
+      align-items: center;
+      font-size: 0.95rem;
+      color: #5A524C;
+      font-style: Time New Roman;
+    }
+    .card {
+      align-items: center;  
+      background: #FAF4EB;
+      width: 100%;
+      max-width: 420px;
+      padding: 32px 24px;
+      border: 1px solid #E3CEB3;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+    #f{
+      text-align: center;
+    }
+    .City{
+      font-size: 20px;
+      font-family: 'Times New Roman', Times, serif;
+      color: white;
+      background-color: #71342b;
+    }
+    #p4{
+      color: #71342b;
+      text-align: center;
+    }
+    #p5{
+      text-align: center;
+      color: #b9786e;
+    }
+    </style>
+<body>
+    <h1 id="h1">Together with their families</h1>
+    <p id="p"><strong>Hira <br> & <br> Ahmad <br></strong></p>
+    <p id="p1">request the honour of your presence <br> on <strong>Sunday, 15th February 2026 <br> Lahore, Pakistan</strong></p>
+    <div class="divider">
+    <span class="divider-icon">_____ ❦ _____</span>
+  </div>
+    <p id="p2">"And among His signs is that He created <br> for you mates from among yourselves,<br> that you may dwell in tranquility with them."</p>
+    <p id="p3">__ Surah Ar-Rum,30:21</p>
+        <div class="divider">
+    <span class="divider-icon">_____ ❦ _____</span>
+  </div>
+  <p class="p2"><strong>The Celebrations</strong></p>
+  <div class="wedding-schedule">
+    <div class="event-item">
+      <div class="event-date">15 Feb</div>
+      <div class="event-details">
+        <div class="event-title">Nikah</div>
+        <div class="event-info">5:00 PM — Grand Marquee, Lahore</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="event-date">16 Feb</div>
+      <div class="event-details">
+        <div class="event-title">Baraat</div>
+        <div class="event-info">7:00 PM — Rose Garden Banquet</div>
+      </div>
+    </div>
+    <div class="event-item">
+      <div class="event-date">17 Feb</div>
+      <div class="event-details">
+        <div class="event-title">Walima</div>
+        <div class="event-info">8:00 PM — Al-Noor Hall</div>
+      </div>
+    </div>
+  </div>
+      <div class="divider">
+    <span class="divider-icon">_____ ❦ _____</span>
+  </div>
+  <p class="p2"><strong>Kindly RSVP</strong></p>
+  <form id="f" action="/action_page.php">Your name <br> <input type="text" name="fullname" placeholder="Full name">
+    <br><br>
+ <form id="f" action="/action_page.php">
+  Number of Guests<br> 
+  <input type="text" name="Guests" placeholder="Just me" list="guest-options">
+  <datalist id="guest-options">
+    <option value="Just me">
+    <option value="Two Guests">
+    <option value="Three Guests">
+    <option value="Four Guests">
+  </datalist>
+  <br><br>
+  <form id="f" action="/action_page.php">
+  Message (optional)<br> 
+  <input type="text" name="Message" placeholder="A note for the couple" list="message-options">
+  
+  <datalist id="message-options">
+    <option value="Congratulations to you both!">
+    <option value="So happy to celebrate with you!">
+    <option value="Wishing you a lifetime of love and happiness!">
+  </datalist>
+  <br><br>
+        <button class="City" type="Submit">Confirm Attendence</button>
+</form>
+<br><br>
+<p id="p4">With love, the families of Hira & Ahmad</p>
+<p id="p5">For queries: 0300-1234567- Lahore, Pakistan</p>
+
+</form>
+</html>

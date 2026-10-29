@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roll Simulator</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: black;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        .dice-container {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .roll-btn {
+            background-color: skyblue;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 40px;
+            transition: background-color 0.2s;
+        }
+        .roll-btn:hover {
+            background-color: #319dbd;
+        }
+        .history-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 0 20px;
+        }
+        .history-item {
+            background-color: #f1f3f5;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .history-item span:last-child {
+            font-size: 1.8rem;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(-10deg); }
+            40% { transform: translate(1px, -1px) rotate(10deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            80% { transform: translate(1px, -1px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        .rolling {
+            animation: shake 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dice Roll Simulator</h1>
+    <div class="dice-container" id="dice">
+        &#9859;
+    </div>
+    <button class="roll-btn" id="roll-button">Roll Dice</button>
+    <div class="history-container" id="history-list">
+    </div>
+    <script>
+        const buttonEl = document.getElementById("roll-button");
+        const diceEl = document.getElementById("dice");
+        const historyListEl = document.getElementById("history-list");
+        let historyList = [];
+        const diceFaces = ["&#9856;", "&#9857;", "&#9858;", "&#9859;", "&#9860;", "&#9861;"];
+        function rollDice() {
+            const rollResult = Math.floor(Math.random() * 6) + 1;
+            diceEl.classList.add("rolling");   
+            setTimeout(() => {
+                diceEl.innerHTML = diceFaces[rollResult - 1];
+                diceEl.classList.remove("rolling");
+                updateHistory(rollResult);
+            }, 500);
+        }
+        function updateHistory(rollResult) {
+            historyList.unshift(rollResult);
+            if (historyList.length > 10) {
+                historyList.pop();
+            }
+            renderHistory();
+        }
+        function renderHistory() {
+            historyListEl.innerHTML = "";
+            historyList.forEach((roll, index) => {
+                const listItem = document.createElement("div");
+                listItem.classList.add("history-item");
+                listItem.innerHTML = `<span>Roll ${index + 1}:</span> <span>${diceFaces[roll - 1]}</span>`;
+                historyListEl.appendChild(listItem);
+            });
+        }
+        buttonEl.addEventListener("click", rollDice);
+    </script>
+</body>
+</html>
